@@ -1,0 +1,41 @@
+{
+  // 使用 IntelliSense 了解相关属性。 
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Terminal Debug",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "start:debug"
+      ],
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "Attach Debug",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/app.js",
+      "request": "launch",
+      "stopOnEntry": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    }
+  ]
+}
