@@ -13,7 +13,9 @@ import { VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
   // const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
 
   app.enableVersioning({
     type: VersioningType.URI,

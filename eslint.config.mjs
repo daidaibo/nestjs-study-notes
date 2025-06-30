@@ -39,6 +39,9 @@ export default tseslint.config(
           'argsIgnorePattern': '^_'   // 忽略 _ 前缀的函数参数
         }
       ],
+      'no-empty': ['error', { 'allowEmptyCatch': true }],
+      'import/prefer-default-export': 'off',     // 不强制默认导出
+      'import/no-import-module-exports': 'error', // 防止错误混用 ESM、CJS
     },
   },
 );

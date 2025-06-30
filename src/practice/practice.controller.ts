@@ -8,7 +8,6 @@ import {
   Query,
   Delete,
   Inject,
-  UploadedFiles,
   UseInterceptors,
   UseFilters,
   SetMetadata,
@@ -24,11 +23,22 @@ import {
   ParseArrayPipe,
   // Version,
   VERSION_NEUTRAL,
+  UploadedFile,
+  UploadedFiles,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  HttpException,
   // UseGuards,
   // UsePipes,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import {
+  AnyFilesInterceptor,
+  FileFieldsInterceptor,
+  FileInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { PracticeService } from './practice.service';
 // import { AuthGuard } from '../auth.guard';
 // import { TimeInterceptor } from '../time.interceptor';
@@ -36,6 +46,7 @@ import { ValidatePipe } from '../validate.pipe';
 import { ErrorFilter } from '../error.filter';
 import { CreatePracticeDto } from './dto/create-practice.dto';
 import { UpdatePracticeDto } from './dto/update-practice.dto';
+import {storage} from './multerStorage'
 
 @Controller({
   path: 'practice',
@@ -111,21 +122,6 @@ export class PracticeController {
     return this.practiceService.findAll();
   }
 
-  @Post('file')
-  @UseInterceptors(
-    AnyFilesInterceptor({
-      dest: 'uploads/',
-    }),
-  )
-  uploadFile(
-    @Body() createPracticeDto: CreatePracticeDto,
-    @UploadedFiles()
-    files: Array<Express.Multer.File> /* npm i -D @types/multer */,
-  ) {
-    console.log(files);
-    return JSON.stringify(createPracticeDto);
-  }
-
   @Get('query')
   queryOne(@Query('id') id: number) {
     throw new Error('xxx');
@@ -174,5 +170,77 @@ export class PracticeController {
   @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.practiceService.remove(+id);
+  }
+
+  @Post('single-file')
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      dest: 'uploads/',
+    }),
+  )
+  uploadSingleFile(
+    @Body() body: UpdatePracticeDto,
+    @UploadedFile() file: Express.Multer.File /* npm i -D @types/multer */,
+  ) {
+    // 使用 FileInterceptor 提取 avatar 字段，再通过 UploadedFile 装饰器把之作为 file 参数传入
+    console.log(file);
+    return JSON.stringify(body);
+  }
+
+  @Post('multiple-files')
+  @UseInterceptors(
+    FilesInterceptor('gallery', 2, {
+      dest: 'uploads/',
+    }),
+  )
+  uploadMultipleFiles(
+    @Body() body: CreatePracticeDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    console.log(files);
+    return JSON.stringify(body);
+  }
+
+  @Post('multiple-field')
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'avatar', maxCount: 1 },
+        { name: 'gallery', maxCount: 2 },
+      ],
+      {
+        dest: 'uploads/',
+      },
+    ),
+  )
+  uploadMultipleField(
+    @Body() body: UpdatePracticeDto,
+    @UploadedFiles() files: { avatar?: Express.Multer.File; gallery?: Express.Multer.File[] },
+  ) {
+    console.log(files);
+    return JSON.stringify(body);
+  }
+
+  @Post('any-files')
+  @UseInterceptors(
+    AnyFilesInterceptor({
+      // dest: 'uploads/',
+      storage
+    }),
+  )
+  uploadAnyFiles(
+    @Body() body: CreatePracticeDto,
+    @UploadedFiles(new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 1000 }),
+        new FileTypeValidator({ fileType: 'image/*' }),
+      ],
+      exceptionFactory: err => {
+        throw new HttpException('Bad Request', 400);
+      },
+    })) files: Array<Express.Multer.File>,
+  ) {
+    console.log(files);
+    return JSON.stringify(body);
   }
 }

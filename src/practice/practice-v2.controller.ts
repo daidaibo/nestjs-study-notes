@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { PracticeService } from './practice.service';
+import * as path from 'path';
 
 @Controller({
   path: 'practice',
@@ -10,6 +11,11 @@ export class PracticeV2Controller {
 
   @Get()
   findAllV2() {
+    console.log(process.cwd());
+    console.log(path.join(process.cwd(), 'uploads'));
+    console.log(path.resolve(process.cwd(), 'uploads'));
+    console.log(__dirname);
+    console.log(path.join(__dirname, '../../uploads'));
     return this.practiceService.findAll();
   }
 
