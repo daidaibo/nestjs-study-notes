@@ -9,10 +9,15 @@ import session from 'express-session';
 import { NestExpressApplication } from '@nestjs/platform-express';
 // import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { join } from 'path';
+import { VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
   // const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
 
   app.use(
     session({

@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { PracticeService } from './practice.service';
 import { PracticeController } from './practice.controller';
+import { PracticeV2Controller } from './practice-v2.controller';
 import { DecoratorModule } from '../decorator/decorator.module';
 import { XDynamicModule } from '../dynamic/dynamic.module';
 
@@ -17,7 +18,7 @@ import { XDynamicModule } from '../dynamic/dynamic.module';
       },
     }),
   ],
-  controllers: [PracticeController],
+  controllers: [PracticeV2Controller, PracticeController],
   providers: [PracticeService],
   exports: [
     /* OtherService */

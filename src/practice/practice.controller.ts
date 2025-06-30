@@ -22,6 +22,8 @@ import {
   Redirect,
   Render,
   ParseArrayPipe,
+  // Version,
+  VERSION_NEUTRAL,
   // UseGuards,
   // UsePipes,
 } from '@nestjs/common';
@@ -35,7 +37,10 @@ import { ErrorFilter } from '../error.filter';
 import { CreatePracticeDto } from './dto/create-practice.dto';
 import { UpdatePracticeDto } from './dto/update-practice.dto';
 
-@Controller('practice')
+@Controller({
+  path: 'practice',
+  version: VERSION_NEUTRAL,
+})
 // @UseGuards(AuthGuard)
 // @UseInterceptors(TimeInterceptor)
 // @UsePipes(ValidatePipe)
@@ -95,6 +100,11 @@ export class PracticeController {
     return this.practiceService.create(createPracticeDto);
   }
 
+  // @Version('2')
+  // @Get()
+  // findAllV2() {
+  //   return this.practiceService.findAll();
+  // }
   @Get()
   @SetMetadata('roles', ['admin'])
   findAll() {

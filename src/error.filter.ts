@@ -27,14 +27,17 @@ export class ErrorFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
 
-        const exceptionRes = exception.getResponse() as { message: string[] };
+        const exceptionRes = exception.getResponse() as {
+          message: string | string[];
+        };
         console.log(exceptionRes);
         /* 兼容 ValidationPipe 的错误处理 */
         const exceptionMsg = exceptionRes.message;
+        const errMsg = Array.isArray(exceptionMsg)
+          ? exceptionMsg.join(',')
+          : exception.message;
 
-        response.status(exception.getStatus()).json({
-          errMsg: exceptionMsg.join(',') ?? exception.message,
-        });
+        response.status(exception.getStatus()).json({ errMsg });
         break;
       }
 

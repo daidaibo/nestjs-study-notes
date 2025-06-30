@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate {
 
     if (!requiredRoles) return true;
     const request: Request = context.switchToHttp().getRequest();
-    const roles = request.header['roles'] as Role[];
+    const roles = request.headers['roles'];
     return requiredRoles.some((role) => roles?.includes(role));
   }
 }
