@@ -29,6 +29,7 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
   HttpException,
+  ValidationPipe,
   // UseGuards,
   // UsePipes,
 } from '@nestjs/common';
@@ -145,7 +146,7 @@ export class PracticeController {
   }
 
   @Post('dto')
-  dto(@Body(ValidatePipe) obj: UpdatePracticeDto) {
+  dto(@Body(ValidationPipe) obj: UpdatePracticeDto) {
     /* npm install -D class-transformer class-validator */
     console.log(obj);
   }

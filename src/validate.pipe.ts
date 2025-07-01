@@ -3,7 +3,9 @@ import {
   // HttpException,
   // HttpStatus,
   BadRequestException,
+  Inject,
   Injectable,
+  Optional,
   PipeTransform,
 } from '@nestjs/common';
 // import { validate } from 'class-validator';
@@ -13,6 +15,11 @@ import {
 
 @Injectable()
 export class ValidatePipe implements PipeTransform {
+
+  @Optional()
+  @Inject('validation_options')
+  private readonly options;
+
   transform(value: string, metadata: ArgumentMetadata) {
     const { metatype, data: field } = metadata;
 
