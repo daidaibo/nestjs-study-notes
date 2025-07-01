@@ -44,7 +44,7 @@ import { PracticeService } from './practice.service';
 // import { AuthGuard } from '../auth.guard';
 // import { TimeInterceptor } from '../time.interceptor';
 import { ValidatePipe } from '../validate.pipe';
-import { ErrorFilter } from '../error.filter';
+// import { ErrorFilter } from '../error.filter';
 import { CreatePracticeDto } from './dto/create-practice.dto';
 import { UpdatePracticeDto } from './dto/update-practice.dto';
 import {storage} from './multerStorage'
@@ -55,8 +55,8 @@ import {storage} from './multerStorage'
 })
 // @UseGuards(AuthGuard)
 // @UseInterceptors(TimeInterceptor)
-// @UsePipes(ValidatePipe)
-@UseFilters(ErrorFilter)
+// @UsePipes(ValidationPipe)
+// @UseFilters(ErrorFilter)
 @SetMetadata('roles', ['user'])
 export class PracticeController {
   // constructor(private readonly practiceService: PracticeService) {}
