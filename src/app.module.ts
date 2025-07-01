@@ -1,12 +1,17 @@
-import { Module, NestModule, MiddlewareConsumer, ValidationPipe } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { PracticeModule } from './practice/practice.module';
 import { RouteMiddleware } from './route.middleware';
-import { ErrorFilter } from './error.filter';
+// import { ErrorFilter } from './error.filter';
 import { DecoratorModule } from './decorator/decorator.module';
 
 @Module({
@@ -28,12 +33,12 @@ import { DecoratorModule } from './decorator/decorator.module';
     },
     {
       provide: APP_PIPE,
-      useClass: ValidationPipe,
+      useFactory: () => new ValidationPipe({ transform: true }),
     },
-    {
-      provide: APP_FILTER,
-      useClass: ErrorFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: ErrorFilter,
+    // },
   ],
 })
 export class AppModule implements NestModule {

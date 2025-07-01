@@ -40,8 +40,6 @@ export default tseslint.config(
         }
       ],
       'no-empty': ['error', { 'allowEmptyCatch': true }],
-      'import/prefer-default-export': 'off',     // 不强制默认导出
-      'import/no-import-module-exports': 'error', // 防止错误混用 ESM、CJS
     },
   },
 );

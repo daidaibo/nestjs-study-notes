@@ -47,7 +47,7 @@ import { ValidatePipe } from '../validate.pipe';
 // import { ErrorFilter } from '../error.filter';
 import { CreatePracticeDto } from './dto/create-practice.dto';
 import { UpdatePracticeDto } from './dto/update-practice.dto';
-import {storage} from './multerStorage'
+import { storage } from './multerStorage';
 
 @Controller({
   path: 'practice',
@@ -216,7 +216,8 @@ export class PracticeController {
   )
   uploadMultipleField(
     @Body() body: UpdatePracticeDto,
-    @UploadedFiles() files: { avatar?: Express.Multer.File; gallery?: Express.Multer.File[] },
+    @UploadedFiles()
+    files: { avatar?: Express.Multer.File; gallery?: Express.Multer.File[] },
   ) {
     console.log(files);
     return JSON.stringify(body);
@@ -226,20 +227,23 @@ export class PracticeController {
   @UseInterceptors(
     AnyFilesInterceptor({
       // dest: 'uploads/',
-      storage
+      storage,
     }),
   )
   uploadAnyFiles(
     @Body() body: CreatePracticeDto,
-    @UploadedFiles(new ParseFilePipe({
-      validators: [
-        new MaxFileSizeValidator({ maxSize: 1000 }),
-        new FileTypeValidator({ fileType: 'image/*' }),
-      ],
-      exceptionFactory: err => {
-        throw new HttpException('Bad Request', 400);
-      },
-    })) files: Array<Express.Multer.File>,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000 }),
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+        exceptionFactory: (err) => {
+          throw new HttpException('Bad Request', 400);
+        },
+      }),
+    )
+    files: Array<Express.Multer.File>,
   ) {
     console.log(files);
     return JSON.stringify(body);
