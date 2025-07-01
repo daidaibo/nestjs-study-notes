@@ -13,11 +13,13 @@ import { PracticeModule } from './practice/practice.module';
 import { RouteMiddleware } from './route.middleware';
 // import { ErrorFilter } from './error.filter';
 import { DecoratorModule } from './decorator/decorator.module';
+import { BookModule } from './book/book.module';
 
 @Module({
   imports: [
     PracticeModule,
     DecoratorModule,
+    BookModule,
   ] /* 当 import 别的模块后，那个模块 exports 的 provider 就可以在当前模块注入了 */,
   controllers: [AppController],
   providers: [

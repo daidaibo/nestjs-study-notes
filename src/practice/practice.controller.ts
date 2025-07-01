@@ -9,7 +9,6 @@ import {
   Delete,
   Inject,
   UseInterceptors,
-  UseFilters,
   SetMetadata,
   Headers,
   Ip,
@@ -238,7 +237,7 @@ export class PracticeController {
           new MaxFileSizeValidator({ maxSize: 1000 }),
           new FileTypeValidator({ fileType: 'image/*' }),
         ],
-        exceptionFactory: (err) => {
+        exceptionFactory: (_) => {
           throw new HttpException('Bad Request', 400);
         },
       }),

@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     console.log('Guard 路由守卫', this.appService.getHello());
 
-    const classMetadata: Role[] = this.reflector.get(
+    const _classMetadata: Role[] = this.reflector.get(
       'roles',
       context.getClass(),
     );
@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
       'roles',
       context.getHandler(),
     );
-    console.log(classMetadata, requiredRoles);
+    // console.log(_classMetadata, requiredRoles);
 
     if (!requiredRoles) return true;
     const request: Request = context.switchToHttp().getRequest();
