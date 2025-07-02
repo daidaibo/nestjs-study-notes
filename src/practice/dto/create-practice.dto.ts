@@ -5,7 +5,7 @@ export class CreatePracticeDto {
     message(args) {
       console.log(args);
       const { targetName, property, value, constraints } = args;
-      return `${targetName} 类的 ${property} 属性的值 ${value} 不满足约束: ${constraints}`;
+      return `${targetName} 类的 ${property} 属性的值 ${value} 不满足约束: ${constraints.join(',')}`;
     },
   })
   name: string;

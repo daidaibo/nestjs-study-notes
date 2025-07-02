@@ -1,7 +1,7 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
 
-export class UserRegisterDto {
-  @IsNotEmpty({ message: '用户名不能为空' })
+export class UserDto {
+  @IsNotEmpty()
   username: string;
 
   @MinLength(6, { message: '密码最小 6 位' })
