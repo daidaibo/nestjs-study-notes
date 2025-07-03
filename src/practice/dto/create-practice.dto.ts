@@ -10,8 +10,8 @@ export class CreatePracticeDto {
   })
   name: string;
 
-  @IsInt()
   @Min(18)
   @Max(60)
+  @IsInt()
   age: number;
 }

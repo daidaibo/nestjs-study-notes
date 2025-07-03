@@ -227,6 +227,8 @@ export class PracticeController {
     AnyFilesInterceptor({
       // dest: 'uploads/',
       storage,
+      // limits
+      // fileFilter
     }),
   )
   uploadAnyFiles(

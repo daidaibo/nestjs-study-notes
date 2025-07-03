@@ -15,7 +15,6 @@ import {
 
 @Injectable()
 export class ValidatePipe implements PipeTransform {
-
   @Optional()
   @Inject('validation_options')
   private readonly options;

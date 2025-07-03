@@ -19,10 +19,11 @@ export class UserService {
     const user = new User();
     user.username = userDto.username;
     user.password = userDto.password;
+
     users.push(user);
 
     await this.dbService.write(users);
-    return users;
+    return user;
   }
 
   async login(userDto: UserDto) {
@@ -38,25 +39,5 @@ export class UserService {
     }
 
     return foundUser;
-  }
-
-  create(_createUserDto: UserDto) {
-    return 'This action adds a new user';
-  }
-
-  findAll() {
-    return `This action returns all user`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, _updateUserDto: UserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

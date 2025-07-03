@@ -30,7 +30,7 @@ export class TimeInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       timeout(500) /* {"message":"Request Timeout","statusCode":408} */,
-      map((data: unknown) => {
+      map((data = null) => {
         return {
           code: 200,
           message: 'success',
