@@ -47,6 +47,7 @@ import { ValidatePipe } from '../validate.pipe';
 import { CreatePracticeDto } from './dto/create-practice.dto';
 import { UpdatePracticeDto } from './dto/update-practice.dto';
 import { storage } from './multerStorage';
+import * as fs from 'fs';
 
 @Controller({
   path: 'practice',
@@ -248,5 +249,60 @@ export class PracticeController {
   ) {
     console.log(files);
     return JSON.stringify(body);
+  }
+
+  @Post('shard-upload')
+  @UseInterceptors(
+    FileInterceptor('chunk', {
+      dest: 'uploads/',
+    }),
+  )
+  shardUpload(
+    @Body('name') name: string,
+    @UploadedFile() blob: Express.Multer.File,
+  ) {
+    console.log(blob);
+
+    const fileName = name.match(/(.+)-\d+$/)![1];
+    const chunkDir = `uploads/chunks_${fileName}`;
+
+    if (!fs.existsSync(chunkDir)) {
+      fs.mkdirSync(chunkDir);
+    }
+
+    fs.cpSync(blob.path, `${chunkDir}/${name}`);
+    fs.rmSync(blob.path);
+  }
+
+  @Get('merge/:name')
+  merger(@Param('name') name: string) {
+    const chunkDir = `uploads/chunks_${name}`;
+    const files = fs.readdirSync(chunkDir);
+
+    files.sort((next, prev) => {
+      const prevN = Number(prev.split('-')[1]);
+      const nextN = Number(next.split('-')[1]);
+      return nextN - prevN;
+    });
+
+    let count = 0;
+    let startPos = 0;
+    files.map((file) => {
+      const filePath = `${chunkDir}/${file}`;
+      const stream = fs.createReadStream(filePath);
+      stream
+        .pipe(
+          fs.createWriteStream(`uploads/${name}`, {
+            start: startPos,
+          }),
+        )
+        .on('finish', () => {
+          count++;
+          if (count === files.length) {
+            fs.rm(chunkDir, { recursive: true }, () => {});
+          }
+        });
+      startPos += fs.statSync(filePath).size;
+    });
   }
 }

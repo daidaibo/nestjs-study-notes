@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大文件分片上传</title>
+  <script src="https://unpkg.com/axios@1.10.0/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <input id="fileInput" type="file" multiple>
+
+  <script>
+    const fileInput = document.getElementById('fileInput')
+    const chunkSize = 80 * 1024 /* 80k */
+
+    fileInput.onchange = async function () {
+      const file = this.files[0]
+      console.log(file)
+
+      const chunks = []
+      let startPos = 0
+      while (startPos < file.size) {
+        chunks.push(file.slice(startPos, startPos + chunkSize))
+        startPos += chunkSize
+      }
+
+      const randomStr = Math.random().toString().slice(2, 8)
+      const fileName = `${randomStr}_${file.name}`
+
+      const tasks = chunks.map((chunk, index) => {
+        const data = new FormData()
+        data.set('name', `${fileName}-${index}`)
+        data.append('chunk', file)
+        return axios.post('http://127.0.0.1:3000/practice/shard-upload', data).then(() => {
+          console.log(`Chunk ${index} success.`)
+        })
+      })
+
+      await Promise.all(tasks)
+      console.log(`Chunks all success.`)
+
+      axios.get(`http://127.0.0.1:3000/practice/merge/${fileName}`)
+
+    }
+
+  </script>
+
+</body>
+
+</html>
