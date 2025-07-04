@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   BadRequestException,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -30,8 +31,8 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get('list')
-  list() {
-    return this.bookService.list();
+  list(@Query('name') name: string) {
+    return this.bookService.list(name);
   }
 
   @Get('detail/:id')
