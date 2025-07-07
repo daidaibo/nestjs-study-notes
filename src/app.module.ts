@@ -14,6 +14,7 @@ import { RouteMiddleware } from './route.middleware';
 // import { ErrorFilter } from './error.filter';
 import { DecoratorModule } from './decorator/decorator.module';
 import { BookModule } from './book/book.module';
+import { MyLogger } from './my-logger';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { BookModule } from './book/book.module';
     //   provide: APP_FILTER,
     //   useClass: ErrorFilter,
     // },
+    MyLogger,
   ],
 })
 export class AppModule implements NestModule {
