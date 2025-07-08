@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DbModuleOptions } from './db.module';
+import { DB_OPTIONS_TOKEN, DbModuleOptions } from './db.module';
 import { access, readFile, writeFile } from 'fs/promises';
 
 // nest g service book/db
 
 @Injectable()
 export class DbService {
-  @Inject('OPTIONS')
+  @Inject(DB_OPTIONS_TOKEN)
   private readonly options: DbModuleOptions;
 
   async read() {

@@ -6,16 +6,11 @@ import { ConfigurableModuleClass } from './dynamic.module-definition';
   controllers: [DynamicController],
 })
 export class XDynamicModule extends ConfigurableModuleClass {
-  // static register(options: Record<string, any>): DynamicModule {
+  // public static register(options: Record<string, any>): DynamicModule {
   //   return {
   //     module: XDynamicModule,
   //     controllers: [DynamicController],
-  //     providers: [
-  //       {
-  //         provide: 'CONFIG_OPTIONS',
-  //         useValue: options,
-  //       },
-  //     ],
+  //     providers: [],
   //     exports: [],
   //   };
   // }

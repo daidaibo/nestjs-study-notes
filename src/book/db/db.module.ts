@@ -7,15 +7,17 @@ export interface DbModuleOptions {
   path: string;
 }
 
+export const DB_OPTIONS_TOKEN = 'MY_DB_OPTIONS';
+
 @Module({})
 export class DbModule {
-  static register(options: DbModuleOptions): DynamicModule {
+  public static register(options: DbModuleOptions): DynamicModule {
     return {
       module: DbModule,
       providers: [
         DbService,
         {
-          provide: 'OPTIONS',
+          provide: DB_OPTIONS_TOKEN,
           useValue: options,
         },
       ],

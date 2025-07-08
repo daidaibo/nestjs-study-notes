@@ -14,13 +14,14 @@ import { RouteMiddleware } from './route.middleware';
 // import { ErrorFilter } from './error.filter';
 import { DecoratorModule } from './decorator/decorator.module';
 import { BookModule } from './book/book.module';
-import { MyLogger } from './my-logger';
+import { WinstonModule } from './winston/winston.module';
 
 @Module({
   imports: [
     PracticeModule,
     DecoratorModule,
     BookModule,
+    WinstonModule.forRoot(),
   ] /* 当 import 别的模块后，那个模块 exports 的 provider 就可以在当前模块注入了 */,
   controllers: [AppController],
   providers: [
@@ -42,7 +43,6 @@ import { MyLogger } from './my-logger';
     //   provide: APP_FILTER,
     //   useClass: ErrorFilter,
     // },
-    MyLogger,
   ],
 })
 export class AppModule implements NestModule {

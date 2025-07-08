@@ -48,6 +48,7 @@ import { CreatePracticeDto } from './dto/create-practice.dto';
 import { UpdatePracticeDto } from './dto/update-practice.dto';
 import { storage } from './multerStorage';
 import * as fs from 'fs';
+import { WINSTON_LOGGER_TOKEN } from '../winston/constants';
 
 @Controller({
   path: 'practice',
@@ -62,6 +63,9 @@ export class PracticeController {
   // constructor(private readonly practiceService: PracticeService) {}
   @Inject(PracticeService)
   private readonly practiceService: PracticeService;
+
+  @Inject(WINSTON_LOGGER_TOKEN)
+  private readonly logger;
 
   @Get('header')
   @Header('X-My-Origin-Bobo', 'https://www.5207.fun/')

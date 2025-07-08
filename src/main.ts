@@ -10,7 +10,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { join } from 'path';
 import { VersioningType } from '@nestjs/common';
-// import { MyLogger } from './my-logger';
+import { WINSTON_LOGGER_TOKEN } from './winston/constants';
 
 async function bootstrap() {
   // const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
@@ -20,7 +20,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
   // app.enableCors();
-  // app.useLogger(app.get(MyLogger));
+  app.useLogger(app.get(WINSTON_LOGGER_TOKEN));
 
   app.enableVersioning({
     type: VersioningType.URI,
