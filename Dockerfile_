@@ -29,6 +29,9 @@ CMD [ "node", "./dist/main.js" ]
 
 # docker build -t nest:test -f Dockerfile .
 
+# Docker 的实现原理依赖 Linux 的 Namespace、Control Group、UnionFS 这三种机制
+# Namespace 实现资源隔离，Control Group 实现容器进程的资源访问限制，UnionFS 实现文件系统的分层存储、镜像合并
+
 # 术语
 #   host 宿主机
 #   image 镜像
@@ -43,11 +46,11 @@ CMD [ "node", "./dist/main.js" ]
 
 # Image
 # docker images
-# docker rmi/stop nginx
+# docker rmi nginx
 
 # Container
 # docker ps -a
-# docker rm/stop nginx
+# docker rm/stop/start/restart nginx
 
 # docker run -d -p 80:80 -v /Users/html:/usr/share/nginx/html -e KEY1=VALUE1 --name nginx nginx:latest 
 # docker inspect nginx

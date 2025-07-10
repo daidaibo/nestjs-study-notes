@@ -26,9 +26,11 @@ WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./
 
+RUN npm i -g pm2
+
 EXPOSE 3000
 
-CMD [ "node", "./main.js" ]
+CMD [ "pm2-runtime", "./main.js" ]
 
 # docker build -t nest:test -f Dockerfile .
 # docker run -d -p 80:3000 --name nest-test nest:test
