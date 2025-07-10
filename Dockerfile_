@@ -1,0 +1,57 @@
+# https://hub.docker.com/
+FROM node:22-alpine
+
+ARG var1
+ARG var2
+# console.log(process.env.var1)
+# console.log(process.env.var2)
+
+WORKDIR /app
+
+COPY package.json .
+
+# RUN npm config set registry https://registry.npmmirror.com/
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+# docker build --build-arg var1=1 --build-arg var2=2 -t nest:test -f Dockerfile .
+ENV var1=${var1} \
+    var2=${var2}
+
+VOLUME /app
+
+CMD [ "node", "./dist/main.js" ]
+
+# docker build -t nest:test -f Dockerfile .
+
+# 术语
+#   host 宿主机
+#   image 镜像
+#   container 容器
+#   registry 仓库
+#   daemon 守护进程
+#   client 客户端
+
+# Registry
+# docker search nginx
+# docker pull nginx:latest
+
+# Image
+# docker images
+# docker rmi/stop nginx
+
+# Container
+# docker ps -a
+# docker rm/stop nginx
+
+# docker run -d -p 80:80 -v /Users/html:/usr/share/nginx/html -e KEY1=VALUE1 --name nginx nginx:latest 
+# docker inspect nginx
+
+# docker exec -it nginx /bin/bash
+# cd /usr/share/nginx/html
+# exit
